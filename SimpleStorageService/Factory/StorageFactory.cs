@@ -14,19 +14,34 @@ namespace SimpleStorageService.Factory
             _settings = options.Value;
         }
 
-        public IStorage CreateStorage(string storageType = null)
-        {
-            var type = storageType ?? _settings.DefaultStorage;
+        //public IEnumerable<IStorage> CreateStorages(IEnumerable<string> storageTypes = null)
+        //{
+        //    var types = storageTypes ?? new List<string> { _settings.DefaultStorage };
 
-            return type switch
+        //    return types.Select(type => type switch
+        //    {
+        //        "S3" => new S3Storage(_settings.AmazonS3),
+        //        "Database" => new DatabaseStorage(_settings.Database),
+        //        "LocalFileSystem" => new LocalFileStorage(_settings.LocalFileSystem),
+        //        "FTP" => new FtpStorage(_settings.FTP),
+        //        _ => throw new ArgumentException($"Unknown storage type: {type}")
+        //    });
+        //}
+
+        public IEnumerable<IStorage> CreateStorages(IEnumerable<string> storageTypes = null)
+        {
+            var types = storageTypes ?? new List<string> { _settings.DefaultStorage };
+
+            return types.Select(type => (IStorage)(type switch
             {
-                "S3" => new S3Storage(_settings.AmazonS3),
+                "AmazonS3" => new S3Storage(_settings.AmazonS3),
                 "Database" => new DatabaseStorage(_settings.Database),
                 "LocalFileSystem" => new LocalFileStorage(_settings.LocalFileSystem),
                 "FTP" => new FtpStorage(_settings.FTP),
                 _ => throw new ArgumentException($"Unknown storage type: {type}")
-            };
+            }));
         }
+
     }
 
 }

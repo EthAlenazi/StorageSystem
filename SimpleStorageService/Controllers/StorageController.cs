@@ -11,13 +11,30 @@ namespace SimpleStorageService.Controllers
     [Route("api/storage")]
     public class StorageController : ControllerBase
     {
-        private readonly IStorage _storage;
+        private readonly StorageHandler _storageHandler;
 
-        public StorageController(IStorage storage)
+        public StorageController(StorageHandler storageHandler)
         {
-            _storage = storage;
+            _storageHandler = storageHandler;
         }
 
+        //[HttpPost("upload")]
+        //public async Task<IActionResult> UploadFile(string file, string fileId)
+        //{
+        //    //if (!CommonValidation.IsValidBase64(file))
+        //    //{
+        //    //    return BadRequest("Invalid input: Provided DataBase64 string is not in a valid Base64 format.");
+        //    //}
+        //    //await _storage.UploadFileAsync(file, file);
+        //    //return Ok("File uploaded successfully.");
+        //    if (file == null || file.Length == 0)
+        //        return BadRequest("File is missing or empty.");
+
+        //    await _storageHandler.HandleUploadAsync(file, fileId);
+
+        //    return Ok($"File uploaded to all storages: ");
+
+        //}
         [HttpPost("upload")]
         public async Task<IActionResult> UploadFile(string file, string fileId)
         {
@@ -25,23 +42,25 @@ namespace SimpleStorageService.Controllers
             {
                 return BadRequest("Invalid input: Provided DataBase64 string is not in a valid Base64 format.");
             }
-            await _storage.UploadFileAsync(file, file);
-            return Ok("File uploaded successfully.");
+
+            await _storageHandler.HandleUploadAsync(fileId, file);
+
+            return Ok($"File uploaded successfully to all storages.");
         }
 
         [HttpGet("download/{fileName}")]
         public async Task<IActionResult> DownloadFile(string fileName)
         {
-            var fileStream = await _storage.DownloadFileAsync(fileName);
+            var fileStream = await _storageHandler.HandleDownloadAsync(fileName);
+            if (fileStream == null)
+            {
+                return NotFound("File not found in any storage.");
+            }
+
             return File(fileStream, "application/octet-stream", fileName);
         }
-    }
 
 
-    public class FileRequest
-    {
-        public string FileName { get; set; }
-        public string FileData { get; set; }
     }
 
 }

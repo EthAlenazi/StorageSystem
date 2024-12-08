@@ -9,7 +9,7 @@ namespace SimpleStorageService.Strategy.Implementation
 
         public LocalFileStorage(LocalFileSystemSettings settings)
         {
-            _settings = settings;
+            _settings = settings ?? throw new ArgumentNullException(nameof(settings));
         }
 
         public Task UploadFileAsync(string fileName, string fileStream)

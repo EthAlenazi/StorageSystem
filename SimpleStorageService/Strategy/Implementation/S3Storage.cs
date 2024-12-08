@@ -9,7 +9,7 @@ namespace SimpleStorageService.Strategy.Implementation
 
         public S3Storage(AmazonS3Settings settings)
         {
-            _settings = settings;
+            _settings = settings ?? throw new ArgumentNullException(nameof(settings));
         }
 
         public Task UploadFileAsync(string fileName, string fileStream)
