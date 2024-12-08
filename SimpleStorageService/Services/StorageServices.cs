@@ -14,7 +14,7 @@
         public void SaveBlob(int id, byte[] data)
         {
             var filePath = Path.Combine(_storagePath, id.ToString());
-            File.WriteAllBytes(filePath, data); // حفظ الملف كملف بايت
+            File.WriteAllBytes(filePath, data); 
         }
 
         public (byte[] Data, DateTime CreatedAt)? RetrieveBlob(int id)

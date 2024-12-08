@@ -18,23 +18,6 @@ namespace SimpleStorageService.Controllers
             _storageHandler = storageHandler;
         }
 
-        //[HttpPost("upload")]
-        //public async Task<IActionResult> UploadFile(string file, string fileId)
-        //{
-        //    //if (!CommonValidation.IsValidBase64(file))
-        //    //{
-        //    //    return BadRequest("Invalid input: Provided DataBase64 string is not in a valid Base64 format.");
-        //    //}
-        //    //await _storage.UploadFileAsync(file, file);
-        //    //return Ok("File uploaded successfully.");
-        //    if (file == null || file.Length == 0)
-        //        return BadRequest("File is missing or empty.");
-
-        //    await _storageHandler.HandleUploadAsync(file, fileId);
-
-        //    return Ok($"File uploaded to all storages: ");
-
-        //}
         [HttpPost("upload")]
         public async Task<IActionResult> UploadFile(string file, string fileId)
         {

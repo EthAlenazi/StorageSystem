@@ -44,16 +44,6 @@ namespace SimpleStorageService.Services.Helpers
 
             return result;
         }
-
-        //public async Task HandleUploadSelectiveAsync(string fileName, Stream fileContent, IEnumerable<string> selectedStorageTypes)
-        //{
-        //    var filteredStorages = _storages.Where(s => selectedStorageTypes.Contains(s.StorageType));
-
-        //    foreach (var storage in filteredStorages)
-        //    {
-        //        await storage.UploadFileAsync(fileName, fileContent);
-        //    }
-        //}
     }
 
 }

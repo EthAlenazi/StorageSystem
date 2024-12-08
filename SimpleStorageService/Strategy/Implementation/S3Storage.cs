@@ -14,10 +14,6 @@ namespace SimpleStorageService.Strategy.Implementation
 
         public Task UploadFileAsync(string fileName, string fileStream)
         {
-            //    // Implement Amazon S3 file upload logic using _settings
-            //    Console.WriteLine($"Uploading {fileName} to S3 bucket {_settings.BucketName} in region {_settings.Region}.");
-            //    return Task.CompletedTask; // Replace with actual S3 SDK logic
-            //
             Console.WriteLine($"Uploading {fileName} to S3 bucket {_settings.BucketName}.");
             // Use Amazon S3 SDK to upload the file from the stream
             // Example: TransferUtility.Upload(fileStream, _settings.BucketName, fileName);
