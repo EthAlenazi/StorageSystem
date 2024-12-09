@@ -1,36 +1,50 @@
 ﻿using SimpleStorageService.Models;
 using SimpleStorageService.Strategy.Interface;
+using System.Reflection.Metadata;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace SimpleStorageService.Strategy.Implementation
 {
     public class LocalFileStorage : IStorage
     {
         private readonly LocalFileSystemSettings _settings;
+        private readonly string _storagePath;
+
 
         public LocalFileStorage(LocalFileSystemSettings settings)
         {
-            _settings = settings ?? throw new ArgumentNullException(nameof(settings));
+            _storagePath = Path.Combine(Directory.GetCurrentDirectory(), "Storage");
+            if (!Directory.Exists(_storagePath))
+                Directory.CreateDirectory(_storagePath);
         }
 
-        public Task UploadFileAsync(string fileName, string fileStream)
+        public Task UploadFileAsync(string fileData, Guid fileId)
         {
-            Console.WriteLine($"Uploading {fileName} to Local File bucket {_settings.RootPath}.");
-            // Use Amazon S3 SDK to upload the file from the stream
-            // Example: TransferUtility.Upload(fileStream, _settings.BucketName, fileName);
+            var filePath = Path.Combine(_storagePath, fileId.ToString());
+            var data = Convert.FromBase64String(fileData);
+            File.WriteAllBytes(filePath, data); 
             return Task.CompletedTask;
         }
 
-        public Task<Stream> DownloadFileAsync(string fileName)
+        public Task<OutputResult> DownloadFileAsync(string fileId)
         {
-            var filePath = Path.Combine(_settings.RootPath, fileName);
-            Console.WriteLine($"Reading file from local path: {filePath}");
-
+            
+            var filePath = Path.Combine(_storagePath, fileId.ToString());
             if (!File.Exists(filePath))
-            {
-                throw new FileNotFoundException("File not found.", fileName);
-            }
+                return null;
 
-            return Task.FromResult<Stream>(new FileStream(filePath, FileMode.Open, FileAccess.Read));
+            var data = File.ReadAllBytes(filePath);
+            var createdAt = File.GetCreationTimeUtc(filePath);
+            var base64Data = Convert.ToBase64String(data);
+            var outputResult = new OutputResult()
+            {
+                Id = fileId,
+                Data = base64Data,
+                Created_at = createdAt,
+                Size= data.Length
+            };
+
+            return Task.FromResult<OutputResult>(outputResult);
         }
     }
 

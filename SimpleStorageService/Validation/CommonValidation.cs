@@ -1,4 +1,4 @@
-﻿namespace SimpleStorageService.Services.Helpers
+﻿namespace SimpleStorageService.Validation
 {
     public static class CommonValidation
     {

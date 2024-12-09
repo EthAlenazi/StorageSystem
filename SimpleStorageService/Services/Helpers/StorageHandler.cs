@@ -1,4 +1,5 @@
-﻿using SimpleStorageService.Strategy.Interface;
+﻿using SimpleStorageService.Models;
+using SimpleStorageService.Strategy.Interface;
 
 namespace SimpleStorageService.Services.Helpers
 {
@@ -11,15 +12,15 @@ namespace SimpleStorageService.Services.Helpers
             _storages = storages;
         }
 
-        public async Task HandleUploadAsync(string fileName, string fileContent)
+        public async Task HandleUploadAsync(SaveFileModel model)
         {
             foreach (var storage in _storages)
             {
-                await storage.UploadFileAsync(fileName, fileContent);
+                await storage.UploadFileAsync(model.Data, model.Id);
             }
         }
 
-        public async Task<Stream> HandleDownloadAsync(string filePath)
+        public async Task<OutputResult> HandleDownloadAsync(string fileId)
         {
             var downloadTasks = _storages.Select(storage =>
             {
@@ -27,11 +28,11 @@ namespace SimpleStorageService.Services.Helpers
                 {
                     try
                     {
-                        return await storage.DownloadFileAsync(filePath);
+                        return await storage.DownloadFileAsync(fileId);
                     }
                     catch
                     {
-                        return null; // Ignore errors for unavailable storages
+                        return null; 
                     }
                 });
             });

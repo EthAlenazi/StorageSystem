@@ -12,18 +12,18 @@ namespace SimpleStorageService.Strategy.Implementation
             _settings = settings ?? throw new ArgumentNullException(nameof(settings));
         }
 
-        public Task UploadFileAsync(string fileName, string fileStream)
+        public Task UploadFileAsync(string fileName, Guid fileId)
         {
             // Implement logic to store file in database table
             Console.WriteLine($"Storing {fileName} into database table {_settings.TableName}.");
             return Task.CompletedTask; // Replace with actual database logic
         }
 
-        public Task<Stream> DownloadFileAsync(string fileName)
+        public Task<OutputResult> DownloadFileAsync(string fileId)
         {
             // Implement logic to retrieve file from database table
-            Console.WriteLine($"Retrieving {fileName} from database table {_settings.TableName}.");
-            return Task.FromResult<Stream>(null); // Replace with actual database logic
+            Console.WriteLine($"Retrieving {fileId} from database table {_settings.TableName}.");
+            return Task.FromResult<OutputResult>(null); // Replace with actual database logic
         }
     }
 

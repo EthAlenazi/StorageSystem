@@ -36,7 +36,7 @@ builder.Services.AddScoped<StorageHandler>(serviceProvider =>
 
     // Fetch storage types from configuration or use a default list
     var storageTypes = configuration.GetSection("StorageSettings:EnabledTypes").Get<string[]>()
-                      ?? new[] { "AmazonS3", "Database", "LocalFileSystem" };
+                      ?? new[] { "LocalFileSystem" };//"AmazonS3", "Database", 
 
     // Create storages dynamically
     var storages = factory.CreateStorages(storageTypes);
@@ -49,8 +49,6 @@ builder.Services.Configure<AmazonS3Settings>(
     builder.Configuration.GetSection("StorageSettings:AmazonS3"));
 builder.Services.Configure<DatabaseSettings>(
     builder.Configuration.GetSection("StorageSettings:Database"));
-builder.Services.Configure<LocalFileSystemSettings>(
-    builder.Configuration.GetSection("StorageSettings:LocalFileSystem"));
 builder.Services.Configure<FtpSettings>(
     builder.Configuration.GetSection("StorageSettings:FTP"));
 

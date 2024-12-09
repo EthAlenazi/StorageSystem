@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SimpleStorageService.Services;
+using SimpleStorageService.Models;
 using SimpleStorageService.Services.Helpers;
-using SimpleStorageService.Strategy.Interface;
-using System.Buffers.Text;
-using System.Reflection.Metadata;
+using SimpleStorageService.Validation;
 
 namespace SimpleStorageService.Controllers
 {
@@ -19,14 +17,14 @@ namespace SimpleStorageService.Controllers
         }
 
         [HttpPost("upload")]
-        public async Task<IActionResult> UploadFile(string file, string fileId)
+        public async Task<IActionResult> UploadFile(SaveFileModel model)
         {
-            if (!CommonValidation.IsValidBase64(file))
+            if (!CommonValidation.IsValidBase64(model.Data))
             {
                 return BadRequest("Invalid input: Provided DataBase64 string is not in a valid Base64 format.");
             }
 
-            await _storageHandler.HandleUploadAsync(fileId, file);
+            await _storageHandler.HandleUploadAsync(model);
 
             return Ok($"File uploaded successfully to all storages.");
         }
@@ -40,7 +38,7 @@ namespace SimpleStorageService.Controllers
                 return NotFound("File not found in any storage.");
             }
 
-            return File(fileStream, "application/octet-stream", fileName);
+            return Ok(fileStream);
         }
 
 
