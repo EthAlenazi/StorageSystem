@@ -2,10 +2,10 @@
 
 namespace SimpleStorageService.Strategy.Interface
 {
-    public interface IStorage
+    public interface IStorageStrategy
     {
         Task UploadFileAsync(string fileData, Guid fileId);
-        Task<OutputResult> DownloadFileAsync(string fileId);
+        Task<ReturnFileModel> DownloadFileAsync(string fileId);
     }
 
 }

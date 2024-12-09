@@ -2,8 +2,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using SimpleStorageService.Factory;
+using SimpleStorageService.Helpers;
 using SimpleStorageService.Models;
-using SimpleStorageService.Services.Helpers;
 using SimpleStorageService.Strategy.Implementation;
 using System.Text;
 
@@ -22,16 +22,16 @@ var storageTypes =
 // Add specific storage services to DI
 builder.Services.AddScoped<S3Storage>();
 builder.Services.AddScoped<DatabaseStorage>();
-builder.Services.AddScoped<LocalFileStorage>();
+builder.Services.AddScoped<LocalFileSystemStorage>();
 builder.Services.AddScoped<FtpStorage>();
 
 // Register the StorageFactory
-builder.Services.AddSingleton<StorageFactory>();
+builder.Services.AddSingleton<StorageProviderFactory>();
 
 // Register StorageHandler with dynamic storages
-builder.Services.AddScoped<StorageHandler>(serviceProvider =>
+builder.Services.AddScoped<StorageServiceHandler>(serviceProvider =>
 {
-    var factory = serviceProvider.GetRequiredService<StorageFactory>();
+    var factory = serviceProvider.GetRequiredService<StorageProviderFactory>();
     var configuration = serviceProvider.GetRequiredService<IConfiguration>();
 
     // Fetch storage types from configuration or use a default list
@@ -40,7 +40,7 @@ builder.Services.AddScoped<StorageHandler>(serviceProvider =>
 
     // Create storages dynamically
     var storages = factory.CreateStorages(storageTypes);
-    return new StorageHandler(storages);
+    return new StorageServiceHandler(storages);
 });
 
 

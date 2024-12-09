@@ -3,7 +3,7 @@ using SimpleStorageService.Strategy.Interface;
 
 namespace SimpleStorageService.Strategy.Implementation
 {
-    public class S3Storage : IStorage
+    public class S3Storage : IStorageStrategy
     {
         private readonly AmazonS3Settings _settings;
 
@@ -20,11 +20,11 @@ namespace SimpleStorageService.Strategy.Implementation
             return Task.CompletedTask;
         }
 
-        public Task<OutputResult> DownloadFileAsync(string fileId)
+        public Task<ReturnFileModel> DownloadFileAsync(string fileId)
         {
             // Implement Amazon S3 file download logic using _settings
             Console.WriteLine($"Downloading {fileId} from S3 bucket {_settings.BucketName}.");
-            return Task.FromResult<OutputResult>(null); // Replace with actual S3 SDK logic
+            return Task.FromResult<ReturnFileModel>(null); // Replace with actual S3 SDK logic
         }
     }
 

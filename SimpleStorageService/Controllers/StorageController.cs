@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SimpleStorageService.Helpers;
 using SimpleStorageService.Models;
-using SimpleStorageService.Services.Helpers;
 using SimpleStorageService.Validation;
 
 namespace SimpleStorageService.Controllers
@@ -9,9 +9,9 @@ namespace SimpleStorageService.Controllers
     [Route("api/storage")]
     public class StorageController : ControllerBase
     {
-        private readonly StorageHandler _storageHandler;
+        private readonly StorageServiceHandler _storageHandler;
 
-        public StorageController(StorageHandler storageHandler)
+        public StorageController(StorageServiceHandler storageHandler)
         {
             _storageHandler = storageHandler;
         }

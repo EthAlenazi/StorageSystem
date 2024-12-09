@@ -1,17 +1,15 @@
 ﻿using SimpleStorageService.Models;
 using SimpleStorageService.Strategy.Interface;
-using System.Reflection.Metadata;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace SimpleStorageService.Strategy.Implementation
 {
-    public class LocalFileStorage : IStorage
+    public class LocalFileSystemStorage : IStorageStrategy
     {
         private readonly LocalFileSystemSettings _settings;
         private readonly string _storagePath;
 
 
-        public LocalFileStorage(LocalFileSystemSettings settings)
+        public LocalFileSystemStorage(LocalFileSystemSettings settings)
         {
             _storagePath = Path.Combine(Directory.GetCurrentDirectory(), "Storage");
             if (!Directory.Exists(_storagePath))
@@ -26,7 +24,7 @@ namespace SimpleStorageService.Strategy.Implementation
             return Task.CompletedTask;
         }
 
-        public Task<OutputResult> DownloadFileAsync(string fileId)
+        public Task<ReturnFileModel> DownloadFileAsync(string fileId)
         {
             
             var filePath = Path.Combine(_storagePath, fileId.ToString());
@@ -36,7 +34,7 @@ namespace SimpleStorageService.Strategy.Implementation
             var data = File.ReadAllBytes(filePath);
             var createdAt = File.GetCreationTimeUtc(filePath);
             var base64Data = Convert.ToBase64String(data);
-            var outputResult = new OutputResult()
+            var outputResult = new ReturnFileModel()
             {
                 Id = fileId,
                 Data = base64Data,
@@ -44,7 +42,7 @@ namespace SimpleStorageService.Strategy.Implementation
                 Size= data.Length
             };
 
-            return Task.FromResult<OutputResult>(outputResult);
+            return Task.FromResult<ReturnFileModel>(outputResult);
         }
     }
 

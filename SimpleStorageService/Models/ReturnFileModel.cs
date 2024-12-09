@@ -1,6 +1,6 @@
 ﻿namespace SimpleStorageService.Models
 {
-    public class OutputResult
+    public class ReturnFileModel
     {
  
             public string Id { get; set; }

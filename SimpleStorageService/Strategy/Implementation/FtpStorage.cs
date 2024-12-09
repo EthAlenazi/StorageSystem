@@ -3,7 +3,7 @@ using SimpleStorageService.Strategy.Interface;
 
 namespace SimpleStorageService.Strategy.Implementation
 {
-    public class FtpStorage : IStorage
+    public class FtpStorage : IStorageStrategy
     {
         private readonly FtpSettings _settings;
 
@@ -19,11 +19,11 @@ namespace SimpleStorageService.Strategy.Implementation
             return Task.CompletedTask; // Replace with actual FTP logic
         }
 
-        public Task<OutputResult> DownloadFileAsync(string fileId)
+        public Task<ReturnFileModel> DownloadFileAsync(string fileId)
         {
             // Implement logic to download file from FTP server
             Console.WriteLine($"Downloading {fileId} from FTP server {_settings.Host}:{_settings.Port} in directory {_settings.RootDirectory}.");
-            return Task.FromResult<OutputResult>(null); // Replace with actual FTP logic
+            return Task.FromResult<ReturnFileModel>(null); // Replace with actual FTP logic
         }
     }
 

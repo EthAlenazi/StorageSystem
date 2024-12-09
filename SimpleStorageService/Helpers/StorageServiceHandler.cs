@@ -1,13 +1,13 @@
 ﻿using SimpleStorageService.Models;
 using SimpleStorageService.Strategy.Interface;
 
-namespace SimpleStorageService.Services.Helpers
+namespace SimpleStorageService.Helpers
 {
-    public class StorageHandler
+    public class StorageServiceHandler
     {
-        private readonly IEnumerable<IStorage> _storages;
+        private readonly IEnumerable<IStorageStrategy> _storages;
 
-        public StorageHandler(IEnumerable<IStorage> storages)
+        public StorageServiceHandler(IEnumerable<IStorageStrategy> storages)
         {
             _storages = storages;
         }
@@ -20,7 +20,7 @@ namespace SimpleStorageService.Services.Helpers
             }
         }
 
-        public async Task<OutputResult> HandleDownloadAsync(string fileId)
+        public async Task<ReturnFileModel> HandleDownloadAsync(string fileId)
         {
             var downloadTasks = _storages.Select(storage =>
             {
@@ -32,7 +32,7 @@ namespace SimpleStorageService.Services.Helpers
                     }
                     catch
                     {
-                        return null; 
+                        return null;
                     }
                 });
             });

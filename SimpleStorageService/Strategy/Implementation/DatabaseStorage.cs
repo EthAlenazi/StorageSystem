@@ -3,7 +3,7 @@ using SimpleStorageService.Strategy.Interface;
 
 namespace SimpleStorageService.Strategy.Implementation
 {
-    public class DatabaseStorage : IStorage
+    public class DatabaseStorage : IStorageStrategy
     {
         private readonly DatabaseSettings _settings;
 
@@ -19,11 +19,11 @@ namespace SimpleStorageService.Strategy.Implementation
             return Task.CompletedTask; // Replace with actual database logic
         }
 
-        public Task<OutputResult> DownloadFileAsync(string fileId)
+        public Task<ReturnFileModel> DownloadFileAsync(string fileId)
         {
             // Implement logic to retrieve file from database table
             Console.WriteLine($"Retrieving {fileId} from database table {_settings.TableName}.");
-            return Task.FromResult<OutputResult>(null); // Replace with actual database logic
+            return Task.FromResult<ReturnFileModel>(null); // Replace with actual database logic
         }
     }
 
